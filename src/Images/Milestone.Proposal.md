@@ -3,8 +3,11 @@
 # Little Care Finder
 ### March 8th, 2026
 
+## Instructor Feedback
+"Lindsey, WOW, NICE PRESENTATION.  You off to a great start and clearly defined your goal, Keep doing great, Bobby"
+
 ## Description of Application
-Little Care Finger is a web application that parents can use to searh for quality childcare centers around them. 
+Little Care Finer is a web application that parents can use to searh for quality childcare centers around them. 
 - Users
     - Browse Childcare Center list
     - Sort childcare Centers
@@ -117,3 +120,33 @@ classDiagram
 - Kepping the Angular and React versions consistent may be challenging
 - Designing search and sorting features will take additional time and testing
 - Managing time is going to be important along the milestones and throughout this project.
+
+## REST API Design
+The Little Care Finder API will follow REST conventions . Resources will use plural nouns and actions will be handled using HTTP verbs such as GET, POST, PUT and DELETE
+### Get ALL Centers
+GET /api/centers
+
+Returns a list of all chcildcare centers
+
+### Get Center by ID
+GET /api/centers/{id}
+
+REturns the details for a specific childcare center.
+
+### Create a New Center
+POST /api/centers
+
+Adds a new childcare center to the system.
+
+### Update Center
+PUT /api/centers/{id}
+
+Updates an existing childcare center's infroamtion. 
+
+### Delete Center
+DELETE /api/centers/{id}
+
+Removes a childcare center from the system.
+
+
+
