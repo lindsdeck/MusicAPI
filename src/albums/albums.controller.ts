@@ -7,7 +7,7 @@ import { OkPacket } from 'mysql2';
 
 export const readAlbums: RequestHandler = async (req: Request, res: Response) => {
   try {
-    let albums;
+    let albums: Album[];
     let albumId = parseInt(req.query.albumId as string);
 
     console.log('albumId', albumId);
@@ -19,10 +19,7 @@ export const readAlbums: RequestHandler = async (req: Request, res: Response) =>
 
     await readTracks(albums, res);
 
-    res.status(200).json(
-      albums
-    );
-
+    res.status(200).json(albums);
   } catch (error) {
     console.error('[albums.controller][readAlbums][Error] ', error);
     res.status(500).json({
@@ -37,9 +34,7 @@ export const readAlbumsByArtist: RequestHandler = async (req: Request, res: Resp
 
     await readTracks(albums, res);
 
-    res.status(200).json(
-      albums
-    );
+    res.status(200).json(albums);
   } catch (error) {
     console.error('[albums.controller][readAlbums][Error] ', error);
     res.status(500).json({
@@ -52,13 +47,11 @@ export const readAlbumsByArtistSearch: RequestHandler = async (req: Request, res
   try {
     console.log('search', req.params.search);
 
-    const albums = await AlbumDao.readAlbumsByArtistSearch('%' + req.params.search + '%');
+    const albums = await AlbumDao.readAlbumsByArtistSearch('%' + (req.params.search as string) + '%');
 
     await readTracks(albums, res);
 
-    res.status(200).json(
-      albums
-    );
+    res.status(200).json(albums);
   } catch (error) {
     console.error('[albums.controller][readAlbums][Error] ', error);
     res.status(500).json({
@@ -70,13 +63,11 @@ export const readAlbumsByArtistSearch: RequestHandler = async (req: Request, res
 export const readAlbumsByDescriptionSearch: RequestHandler = async (req: Request, res: Response) => {
   try {
     console.log('search', req.params.search);
-    const albums = await AlbumDao.readAlbumsByDescriptionSearch('%' + req.params.search + '%');
+    const albums = await AlbumDao.readAlbumsByDescriptionSearch('%' + (req.params.search as string) + '%');
 
     await readTracks(albums, res);
 
-    res.status(200).json(
-      albums
-    );
+    res.status(200).json(albums);
   } catch (error) {
     console.error('[albums.controller][readAlbums][Error] ', error);
     res.status(500).json({
@@ -90,7 +81,6 @@ export const createAlbum: RequestHandler = async (req: Request, res: Response) =
     const okPacket: OkPacket = await AlbumDao.createAlbum(req.body);
 
     console.log('req.body', req.body);
-
     console.log('album', okPacket);
 
     req.body.tracks.forEach(async (track: Track, index: number) => {
@@ -104,9 +94,7 @@ export const createAlbum: RequestHandler = async (req: Request, res: Response) =
       }
     });
 
-    res.status(200).json(
-      okPacket
-    );
+    res.status(200).json(okPacket);
   } catch (error) {
     console.error('[albums.controller][createAlbum][Error] ', error);
     res.status(500).json({
@@ -120,10 +108,9 @@ export const updateAlbum: RequestHandler = async (req: Request, res: Response) =
     const okPacket: OkPacket = await AlbumDao.updateAlbum(req.body);
 
     console.log('req.body', req.body);
-
     console.log('album', okPacket);
 
-    req.body.tracks.forEach(async (track: Track, index: number) => {
+    req.body.tracks.forEach(async (track: Track) => {
       try {
         await TracksDao.updateTrack(track);
       } catch (error) {
@@ -134,9 +121,7 @@ export const updateAlbum: RequestHandler = async (req: Request, res: Response) =
       }
     });
 
-    res.status(200).json(
-      okPacket
-    );
+    res.status(200).json(okPacket);
   } catch (error) {
     console.error('[albums.controller][updateAlbum][Error] ', error);
     res.status(500).json({
@@ -168,11 +153,9 @@ export const deleteAlbum: RequestHandler = async (req: Request, res: Response) =
     if (!Number.isNaN(albumId)) {
       const response = await AlbumDao.deleteAlbum(albumId);
 
-      res.status(200).json(
-        response
-      );
+      res.status(200).json(response);
     } else {
-      throw new Error("Integer expected for albumId");
+      throw new Error('Integer expected for albumId');
     }
   } catch (error) {
     console.error('[albums.controller][deleteAlbum][Error] ', error);
@@ -181,4 +164,3 @@ export const deleteAlbum: RequestHandler = async (req: Request, res: Response) =
     });
   }
 };
-

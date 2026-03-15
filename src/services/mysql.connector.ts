@@ -5,18 +5,16 @@ let pool: Pool | null = null;
 const initializeMySqlConnector = () => {
   try {
     pool = createPool({
-      connectionLimit:
-        parseInt(
-          process.env.MY_SQL_DB_CONNECTION_LIMIT != undefined
-            ? process.env.MY_SQL_DB_CONNECTION_LIMIT
-            : ""
-        ),
-      port:
-        parseInt(
-          process.env.MY_SQL_DB_PORT != undefined
-            ? process.env.MY_SQL_DB_PORT
-            : ""
-        ),
+      connectionLimit: parseInt(
+        process.env.MY_SQL_DB_CONNECTION_LIMIT != undefined
+          ? process.env.MY_SQL_DB_CONNECTION_LIMIT
+          : '10'
+      ),
+      port: parseInt(
+        process.env.MY_SQL_DB_PORT != undefined
+          ? process.env.MY_SQL_DB_PORT
+          : '3306'
+      ),
       host: process.env.MY_SQL_DB_HOST,
       user: process.env.MY_SQL_DB_USER,
       password: process.env.MY_SQL_DB_PASSWORD,
@@ -27,24 +25,24 @@ const initializeMySqlConnector = () => {
     console.log('process.env.DB_DATABASE', process.env.MY_SQL_DB_DATABASE);
 
     pool.getConnection((err, connection) => {
-  if (err) {
-    console.error('mysql connection error:', err);
-    throw new Error('not able to connect to database');
-  } else {
-    console.log('connection made');
-    connection.release();
-  }
-});
+      if (err) {
+        console.error('mysql connection error:', err);
+        throw new Error('not able to connect to database');
+      } else {
+        console.log('connection made');
+        connection.release();
+      }
+    });
   } catch (error) {
     console.error(
-      '[mysql.connector][initializeMysqlConnector][Error]: ',
+      '[mysql.connector][initializeMySqlConnector][Error]: ',
       error
     );
-    throw new Error('failed to initialized pool');
+    throw new Error('failed to initialize pool');
   }
 };
 
-export const execute = <T>(query: string, params: string[] | Object): Promise<T> => {
+export const execute = <T>(query: string, params: any[] = []): Promise<T> => {
   try {
     if (!pool) {
       initializeMySqlConnector();
@@ -52,11 +50,13 @@ export const execute = <T>(query: string, params: string[] | Object): Promise<T>
 
     return new Promise<T>((resolve, reject) => {
       pool!.query(query, params, (error, results) => {
-        if (error) reject(error);
-        else resolve(results);
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results as T);
+        }
       });
     });
-
   } catch (error) {
     console.error('[mysql.connector][execute][Error]: ', error);
     throw new Error('failed to execute MySQL query');
