@@ -33,7 +33,7 @@ export const readAlbums: RequestHandler = async (req: Request, res: Response) =>
 
 export const readAlbumsByArtist: RequestHandler = async (req: Request, res: Response) => {
   try {
-    const albums = await AlbumDao.readAlbumsByArtist(req.params.artist);
+    const albums = await AlbumDao.readAlbumsByArtist(req.params.artist as string);
 
     await readTracks(albums, res);
 
