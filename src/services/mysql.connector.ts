@@ -1,4 +1,4 @@
-import { createPool, Pool } from 'mysql';
+import { createPool, Pool } from 'mysql2';
 
 let pool: Pool | null = null;
 
@@ -27,14 +27,14 @@ const initializeMySqlConnector = () => {
     console.log('process.env.DB_DATABASE', process.env.MY_SQL_DB_DATABASE);
 
     pool.getConnection((err, connection) => {
-      if (err) {
-        console.log('error mysql failed to connect');
-        throw new Error('not able to connect to database');
-      } else {
-        console.log('connection made');
-        connection.release();
-      }
-    });
+  if (err) {
+    console.error('mysql connection error:', err);
+    throw new Error('not able to connect to database');
+  } else {
+    console.log('connection made');
+    connection.release();
+  }
+});
   } catch (error) {
     console.error(
       '[mysql.connector][initializeMysqlConnector][Error]: ',

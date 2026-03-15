@@ -1,4 +1,4 @@
-import { OkPacket } from 'mysql';
+import { OkPacket } from 'mysql2';
 import { execute } from '../services/mysql.connector';
 import { Album } from './albums.model';
 import { albumQueries } from './albums.queries';

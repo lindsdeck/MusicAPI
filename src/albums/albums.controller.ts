@@ -3,7 +3,7 @@ import { Album } from './albums.model';
 import { Track } from '../tracks/tracks.model';
 import * as AlbumDao from './albums.dao';
 import * as TracksDao from '../tracks/tracks.dao';
-import { OkPacket } from 'mysql';
+import { OkPacket } from 'mysql2';
 
 export const readAlbums: RequestHandler = async (req: Request, res: Response) => {
   try {
