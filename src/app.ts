@@ -1,19 +1,42 @@
 import express, { Request, Response } from 'express';
-import dotenv from "dotenv";
+import albumsRouter from './albums/albums.routes';
+import artistsRouter from './artists/artists.routes';
+import helmet from 'helmet';
+import cors from 'cors';
+import logger from './middleware/logger.middleware';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
-const app = express(); //Creates an express application instance
-const port = 3000; //Port numbner that the server will listen to 
+const app = express();
+const port = process.env.PORT || 5000;
 
-console.log(process.env.GREETING);       // ✅
-console.log(process.env.PORT);           // ✅
-console.log(process.env.MY_SQL_DB_HOST); // ✅
-console.log(process.env.NODE_ENV);       // ✅
+// enable all CORS requests
+app.use(cors());
 
+// parse JSON bodies
+app.use(express.json());
 
-//handles the GET request to the root route and then sends a response back to the client with the message.
-app.get('/', (req: Request, res: Response) => {  res.send('Hello, World from TypeScript!');
+// parse URL-encoded bodies
+app.use(express.urlencoded({ extended: true }));
+
+// security middleware
+app.use(helmet());
+
+// development logger
+if (process.env.NODE_ENV === 'development') {
+  app.use(logger);
+  console.log(process.env.GREETING + ' in dev mode');
+}
+
+// root route
+app.get('/', (req: Request, res: Response) => {
+  res.send('<h1>Welcome to the Music API!</h1>');
 });
-// logs when the server starts and is listening on the specified port
-app.listen(port, ()=> {console.log(`Example app listening at http://localhost:${port}`)});
+
+// routers
+app.use('/', [albumsRouter, artistsRouter]);
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
+});
