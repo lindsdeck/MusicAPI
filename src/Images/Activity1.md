@@ -1,37 +1,27 @@
 # CST391 - Activity 1: Express API - 
 # Lindsey DeDecker
-### March 8th, 2026
+### March 16th, 2026
 
-## Tool Installation and Understanding
-In this activity I installed NodeJS and NPM. I then used NODEJS within Visual Studio Code.
-Part 2 involved using TypeScript to create a node application. 
+## Video Link
+https://youtu.be/Hp9zqV5o9Rs
 
-## Screenshots
+## Video Explanation
+In the above video, I demonstrate the functionality of the MusicAPI app within the localhost and Postman.  We can see the API respond to many different requests. The project is fully funcitoning with retrieving, creating and deleting albums and retrieving artist information. 
 
-- ### NodeJS installation
-#### The below screenshot shows valisation within the terminal that the correct version was installed for NodeJS. 
-![node -v](./1.png)
+## Explanation of one API Method
+The Albums endpoint that retrieves the album data involves the router, controller and DAO. 
 
-- ### NPM installation
-#### The below screenshot shows validation within the terminal that the correct version was installed for NPM. 
-![npm -v](./2.png)
+**Router**
+- The router defines the endpoint and determines which controller method should handle the request.  When a GET request to /albums comes in, the router is going to direct the request to the readAlbums controller method.
 
-- ### NodeJS Hello World Application
-#### Below we can see that the Hello World applcation we created with Node and JavaScript is working within the terminal and displaying the script as we expect it to
-![Hello World In console application](./HelloWorld.png)
+**Controller**
+- The controller processes the request and determines what data should be returned.  IT will check the query parameter which in this case is AlbumId.  If it gets a specific ID that exists it will return it and if not it will return nothing.
 
-- ### Express "Hello World" Application
-#### I have now created a helloworld project, added in the node package manager, created my app.js file and then started it within the terminal.  From here, I then went to the local host page and we can see that they are communicating and we are getting the output that was exprected.
-![Hello Worl in broswer](./HelloWorld2.png)
+**Data Access Object**
+- The DAO is what communicated with the MySQL database by executing the DQL queries.  The queries are processed with a MySQL connection pool.
 
-- ### Node Monitor
-#### Nodemon was installed for this project. The project is now run with nodemon instead of regular node like above and is still working in its connectiona nd outputting what is expected. 
-![Hello World in Broswer with nodemon utility](./NodeMonitor.png)
+## Explanation of Express API project
+In this project, I created a RESTful API called MusicAPI using Node.js, Express and TypeScript. The purpose of the application is all for managing music data from MySQL.  The API followed the MVC architecture. 
 
-- ### Node.js with TypeScript
-#### I have created a node application but using TypeSCript. First typescript was installed and then within src, our app.ts file was created.  When run, we can see that the local host is connected and we are getting the expected output.  
-![Hello World TypeScript](./HelloTS.png)
+The project also includes middleware such as logging, CORS and Helmet. These are used to handle requests and allow cross-origin communication.  Enviornment variables are stored within the .env file. This is where the database configuration and connection happens. 
 
-- ### Commenting within Visual Studio Code on app.ts
-#### You can see the app.ts file below along with the commenting within the code to show understanding of what the code is doing. We are creating express applicaiton, setting the port and then using GET to make the request and then send the response back and logging when the server starts listening at that port. 
-![commented app.ts](./CommentingAppTs.png)
